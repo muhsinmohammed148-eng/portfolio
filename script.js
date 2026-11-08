@@ -1,4 +1,206 @@
 // ============================================
+// CUSTOM CURSOR — MAGNETIC RIBBON TRAIL
+// ============================================
+const canvas = document.getElementById('cursorCanvas');
+const ctx = canvas.getContext('2d');
+
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+window.addEventListener('resize', () => {
+    canvasWidth = window.innerWidth;
+    canvasHeight = window.innerHeight;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+});
+
+// Mouse tracking
+let mouse = { x: canvasWidth / 2, y: canvasHeight / 2 };
+let isMouseMoving = false;
+let mouseTimeout;
+let isHovering = false;
+let isClicking = false;
+
+// Trail points history
+const trailLength = 60;
+const trail = [];
+for (let i = 0; i < trailLength; i++) {
+    trail.push({ x: canvasWidth / 2, y: canvasHeight / 2 });
+}
+
+// Click burst particles
+const bursts = [];
+
+document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    isMouseMoving = true;
+    clearTimeout(mouseTimeout);
+    mouseTimeout = setTimeout(() => { isMouseMoving = false; }, 100);
+});
+
+document.addEventListener('mousedown', (e) => {
+    isClicking = true;
+    // Create burst particles on click
+    for (let i = 0; i < 12; i++) {
+        const angle = (Math.PI * 2 / 12) * i + Math.random() * 0.5;
+        const speed = 2 + Math.random() * 4;
+        bursts.push({
+            x: mouse.x,
+            y: mouse.y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            decay: 0.02 + Math.random() * 0.02,
+            size: 2 + Math.random() * 3,
+            hue: Math.random() > 0.5 ? 258 : 179 // purple or teal
+        });
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    isClicking = false;
+});
+
+// Hover detection
+const interactiveElements = document.querySelectorAll(
+    'a, button, .btn, .filter-btn, .project-card, .domain-tags span, .carousel-btn, .dot, input, textarea, select, .social-link, .contact-method'
+);
+
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => { isHovering = true; });
+    el.addEventListener('mouseleave', () => { isHovering = false; });
+});
+
+// Hide canvas when mouse leaves window
+document.addEventListener('mouseleave', () => {
+    canvas.style.opacity = '0';
+});
+document.addEventListener('mouseenter', () => {
+    canvas.style.opacity = '1';
+});
+
+// Easing for smooth trail
+let smoothMouse = { x: mouse.x, y: mouse.y };
+
+// Draw the ribbon trail
+function drawRibbon() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // Update smooth mouse position
+    smoothMouse.x += (mouse.x - smoothMouse.x) * 0.35;
+    smoothMouse.y += (mouse.y - smoothMouse.y) * 0.35;
+
+    // Add current position to trail
+    trail.unshift({ x: smoothMouse.x, y: smoothMouse.y });
+    if (trail.length > trailLength) {
+        trail.pop();
+    }
+
+    // Draw the ribbon using bezier curves
+    if (trail.length > 3) {
+        for (let i = 0; i < trail.length - 2; i++) {
+            const progress = i / trail.length;
+            const point = trail[i];
+            const nextPoint = trail[i + 1];
+            const afterPoint = trail[i + 2];
+
+            // Thickness: thick at head, thin at tail
+            const baseWidth = isHovering ? 6 : 4;
+            const width = baseWidth * (1 - progress * 0.9);
+
+            // Opacity: full at head, fades at tail
+            const opacity = (1 - progress) * (isHovering ? 0.9 : 0.6);
+
+            // Color: purple at head, teal at tail
+            const hue = 258 - progress * 79; // 258 (purple) -> 179 (teal)
+            const saturation = isHovering ? 80 : 70;
+            const lightness = isHovering ? 70 : 65;
+
+            ctx.beginPath();
+
+            // Smooth curve through points
+            if (i === 0) {
+                ctx.moveTo(point.x, point.y);
+            }
+
+            const midX = (point.x + nextPoint.x) / 2;
+            const midY = (point.y + nextPoint.y) / 2;
+            ctx.quadraticCurveTo(point.x, point.y, midX, midY);
+
+            ctx.strokeStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            // Glow layer
+            if (isHovering || isClicking) {
+                ctx.beginPath();
+                if (i === 0) {
+                    ctx.moveTo(point.x, point.y);
+                }
+                ctx.quadraticCurveTo(point.x, point.y, midX, midY);
+                ctx.strokeStyle = `hsla(${hue}, 100%, 80%, ${opacity * 0.3})`;
+                ctx.lineWidth = width * 3;
+                ctx.filter = 'blur(4px)';
+                ctx.stroke();
+                ctx.filter = 'none';
+            }
+        }
+
+        // Draw cursor head dot
+        const headSize = isClicking ? 3 : (isHovering ? 5 : 4);
+        ctx.beginPath();
+        ctx.arc(trail[0].x, trail[0].y, headSize, 0, Math.PI * 2);
+        ctx.fillStyle = isHovering
+            ? `hsla(179, 80%, 70%, 0.9)`
+            : `hsla(258, 70%, 75%, 0.8)`;
+        ctx.fill();
+
+        // Cursor head glow
+        ctx.beginPath();
+        ctx.arc(trail[0].x, trail[0].y, headSize * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = isHovering
+            ? `hsla(179, 100%, 80%, 0.15)`
+            : `hsla(258, 100%, 80%, 0.1)`;
+        ctx.fill();
+    }
+
+    // Draw burst particles
+    for (let i = bursts.length - 1; i >= 0; i--) {
+        const p = bursts[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+        p.life -= p.decay;
+
+        if (p.life <= 0) {
+            bursts.splice(i, 1);
+            continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${p.life * 0.8})`;
+        ctx.fill();
+
+        // Particle glow
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 80%, ${p.life * 0.2})`;
+        ctx.fill();
+    }
+
+    requestAnimationFrame(drawRibbon);
+}
+
+drawRibbon();
+
+// ============================================
 // NAVIGATION
 // ============================================
 const navbar = document.getElementById('navbar');
@@ -27,79 +229,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         navLinks.classList.remove('active');
     });
 });
-
-// ============================================
-// TYPEWRITER EFFECT
-// ============================================
-const typewriterElement = document.getElementById('typewriter');
-const phrases = [
-    'Odoo Team Lead & Senior Developer',
-    'ERP Architecture Specialist',
-    'Python & JavaScript Developer',
-    'Flutter Mobile App Developer',
-    '30+ Enterprise Projects Delivered'
-];
-let phraseIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typeSpeed = 100;
-
-function typeWriter() {
-    const currentPhrase = phrases[phraseIndex];
-
-    if (isDeleting) {
-        typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-        typeSpeed = 50;
-    } else {
-        typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-        typeSpeed = 100;
-    }
-
-    if (!isDeleting && charIndex === currentPhrase.length) {
-        isDeleting = true;
-        typeSpeed = 2000; // Pause at end
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        typeSpeed = 500; // Pause before next phrase
-    }
-
-    setTimeout(typeWriter, typeSpeed);
-}
-
-// Start typewriter on load
-document.addEventListener('DOMContentLoaded', typeWriter);
-
-// ============================================
-// PARTICLE ANIMATION
-// ============================================
-const particlesContainer = document.getElementById('particles');
-
-function createParticles() {
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 6}s`;
-        particle.style.animationDuration = `${4 + Math.random() * 4}s`;
-
-        // Random colors
-        const colors = ['#6c63ff', '#00d4aa', '#ff6b6b', '#ffd93d'];
-        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-        // Random sizes
-        const size = Math.random() * 4 + 2;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-
-        particlesContainer.appendChild(particle);
-    }
-}
-
-createParticles();
 
 // ============================================
 // COUNTER ANIMATION
@@ -145,7 +274,7 @@ if (heroSection) {
 // SCROLL ANIMATIONS
 // ============================================
 const fadeElements = document.querySelectorAll(
-    '.skill-category, .timeline-item, .project-card, .about-grid, .contact-grid'
+    '.skill-group, .timeline-item, .project-card, .about-grid, .contact-grid, .skills-sidebar'
 );
 
 fadeElements.forEach(el => {
@@ -166,6 +295,119 @@ const scrollObserver = new IntersectionObserver((entries) => {
 fadeElements.forEach(el => scrollObserver.observe(el));
 
 // ============================================
+// SECTION TITLE REVEAL
+// ============================================
+const sectionTitles = document.querySelectorAll('.section-title');
+
+const titleObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, { threshold: 0.5 });
+
+sectionTitles.forEach(title => titleObserver.observe(title));
+
+// ============================================
+// TIMELINE DRAW ON SCROLL
+// ============================================
+const timeline = document.querySelector('.timeline');
+
+if (timeline) {
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    timelineObserver.observe(timeline);
+}
+
+// ============================================
+// CURSOR-FOLLOW GLOW ON PROJECT CARDS
+// ============================================
+const cards = document.querySelectorAll('.project-card');
+
+cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+    });
+});
+
+// ============================================
+// FLOATING PARTICLES IN HERO
+// ============================================
+function createParticles() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'hero-particles';
+    hero.appendChild(particlesContainer);
+
+    const particleCount = 20;
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.width = (Math.random() * 4 + 2) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+        particle.style.animationDelay = (Math.random() * 10) + 's';
+        particle.style.opacity = 0;
+
+        // Random color between accent and secondary
+        if (Math.random() > 0.5) {
+            particle.style.background = 'var(--secondary)';
+        }
+
+        particlesContainer.appendChild(particle);
+    }
+}
+
+createParticles();
+
+// ============================================
+// STAGGERED SCROLL REVEAL FOR PROJECT GRID
+// ============================================
+const projectsGrid = document.querySelector('.projects-grid');
+if (projectsGrid) {
+    projectsGrid.classList.add('stagger-children');
+}
+
+// ============================================
+// ABOUT GRID DIRECTIONAL ANIMATIONS
+// ============================================
+const aboutImage = document.querySelector('.about-image');
+const aboutContent = document.querySelector('.about-content');
+
+if (aboutImage) {
+    aboutImage.classList.add('fade-in', 'from-left');
+    scrollObserver.observe(aboutImage);
+}
+
+if (aboutContent) {
+    aboutContent.classList.add('fade-in', 'from-right');
+    scrollObserver.observe(aboutContent);
+}
+
+// ============================================
+// SKILLS SIDEBAR SCALE ANIMATION
+// ============================================
+const skillsSidebar = document.querySelector('.skills-sidebar');
+if (skillsSidebar) {
+    skillsSidebar.classList.add('scale-in');
+}
+
+// ============================================
 // PROJECT FILTERS
 // ============================================
 const filterButtons = document.querySelectorAll('.filter-btn');
@@ -173,9 +415,7 @@ const projectCards = document.querySelectorAll('.project-card');
 
 filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-        // Remove active class from all buttons
         filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
         button.classList.add('active');
 
         const filter = button.getAttribute('data-filter');
@@ -184,8 +424,8 @@ filterButtons.forEach(button => {
             const category = card.getAttribute('data-category');
 
             if (filter === 'all' || category === filter) {
-                card.style.display = 'block';
-                card.style.animation = 'fadeInUp 0.5s ease forwards';
+                card.style.display = 'flex';
+                card.style.animation = 'fadeInUp 0.4s ease forwards';
             } else {
                 card.style.display = 'none';
             }
@@ -225,21 +465,19 @@ if (contactForm) {
         const subject = formData.get('subject');
         const message = formData.get('message');
 
-        // Create mailto link
         const mailtoLink = `mailto:mmusi0634@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
             `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
         )}`;
 
         window.location.href = mailtoLink;
 
-        // Show success message
         const submitBtn = this.querySelector('.btn-submit');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span class="btn-text">Opening Email Client...</span> <span class="btn-icon">✅</span>';
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Opening email client...';
         submitBtn.disabled = true;
 
         setTimeout(() => {
-            submitBtn.innerHTML = originalText;
+            submitBtn.textContent = originalText;
             submitBtn.disabled = false;
             this.reset();
         }, 3000);
@@ -273,67 +511,6 @@ function highlightNavLink() {
 window.addEventListener('scroll', highlightNavLink);
 
 // ============================================
-// PARALLAX EFFECT ON HERO
-// ============================================
-window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const heroContent = document.querySelector('.hero-content');
-    const heroImage = document.querySelector('.hero-image');
-
-    if (heroContent && scrolled < window.innerHeight) {
-        heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
-        heroImage.style.transform = `translateY(${scrolled * 0.15}px)`;
-    }
-});
-
-// ============================================
-// SKILL TAG HOVER EFFECT
-// ============================================
-document.querySelectorAll('.skill-tag').forEach(tag => {
-    tag.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.1)';
-    });
-    tag.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-    });
-});
-
-// ============================================
-// PAGE LOAD ANIMATION
-// ============================================
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    requestAnimationFrame(() => {
-        document.body.style.opacity = '1';
-    });
-});
-
-// ============================================
-// CURSOR GLOW EFFECT (Desktop only)
-// ============================================
-if (window.innerWidth > 768) {
-    const cursorGlow = document.createElement('div');
-    cursorGlow.style.cssText = `
-        position: fixed;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(108, 99, 255, 0.08) 0%, transparent 70%);
-        pointer-events: none;
-        z-index: 0;
-        transform: translate(-50%, -50%);
-        transition: transform 0.1s ease;
-    `;
-    document.body.appendChild(cursorGlow);
-
-    document.addEventListener('mousemove', (e) => {
-        cursorGlow.style.left = e.clientX + 'px';
-        cursorGlow.style.top = e.clientY + 'px';
-    });
-}
-
-// ============================================
 // IMAGE CAROUSEL
 // ============================================
 const carouselSlides = document.querySelectorAll('.carousel-slide');
@@ -361,16 +538,14 @@ function prevSlide() {
     goToSlide(currentSlide - 1);
 }
 
-// Auto-advance carousel every 4 seconds
 function startCarousel() {
-    carouselInterval = setInterval(nextSlide, 4000);
+    carouselInterval = setInterval(nextSlide, 5000);
 }
 
 function stopCarousel() {
     clearInterval(carouselInterval);
 }
 
-// Event listeners for carousel buttons
 if (prevBtn) {
     prevBtn.addEventListener('click', () => {
         prevSlide();
@@ -387,7 +562,6 @@ if (nextBtn) {
     });
 }
 
-// Event listeners for carousel dots
 carouselDots.forEach(dot => {
     dot.addEventListener('click', () => {
         const index = parseInt(dot.getAttribute('data-index'));
@@ -397,14 +571,12 @@ carouselDots.forEach(dot => {
     });
 });
 
-// Pause on hover
 const carousel = document.getElementById('aboutCarousel');
 if (carousel) {
     carousel.addEventListener('mouseenter', stopCarousel);
     carousel.addEventListener('mouseleave', startCarousel);
 }
 
-// Touch/swipe support for carousel
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -428,10 +600,6 @@ if (carousel) {
     }, { passive: true });
 }
 
-// Start carousel on load
 if (carouselSlides.length > 0) {
     startCarousel();
 }
-
-console.log('%c🚀 Portfolio loaded successfully!', 'color: #6c63ff; font-size: 16px; font-weight: bold;');
-console.log('%cDesigned & Developed by Mohammed Muhsin', 'color: #00d4aa; font-size: 12px;');

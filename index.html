@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohammed Muhsin | Odoo Team Lead & Senior Developer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mohammed Muhsin — Odoo Developer & Team Lead</title>
+    <link rel="stylesheet" href="style.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="grain-overlay"></div>
+    
+    <!-- Custom Cursor Canvas -->
+    <canvas class="cursor-canvas" id="cursorCanvas"></canvas>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <a href="#hero" class="nav-logo">MM<span>.</span></a>
+            <a href="#hero" class="nav-logo">muhsin<span class="logo-dot">.</span></a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
@@ -23,7 +28,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
+                <li><a href="#projects">Work</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -31,71 +36,51 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
-        <div class="hero-particles" id="particles"></div>
         <div class="container hero-container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="badge-dot"></span>
-                    Available for Opportunities
-                </div>
-                <h1 class="hero-title">
-                    <span class="title-line">Hi, I'm</span>
-                    <span class="title-name">Mohammed Muhsin</span>
-                </h1>
-                <p class="hero-subtitle">
-                    <span class="typewriter" id="typewriter"></span>
-                    <span class="cursor">|</span>
+                <p class="hero-greeting">Hello, I'm</p>
+                <h1 class="hero-title">Mohammed<br>Muhsin<span class="title-period">.</span></h1>
+                <p class="hero-role">Odoo Team Lead &amp; Senior Developer</p>
+                <p class="hero-description">
+                    I build enterprise ERP systems that actually work for the people who use them.
+                    Based in Kerala, India — currently leading development at Foxiom Leads.
                 </p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">See my work</a>
+                    <a href="#contact" class="btn btn-ghost">Get in touch</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-number" data-target="4">0</span><span class="stat-plus">+</span>
-                        <span class="stat-label">Years Experience</span>
+                        <span class="stat-label">years experience</span>
                     </div>
+                    <div class="stat-divider"></div>
                     <div class="stat">
                         <span class="stat-number" data-target="30">0</span><span class="stat-plus">+</span>
-                        <span class="stat-label">Projects Delivered</span>
+                        <span class="stat-label">projects delivered</span>
                     </div>
+                    <div class="stat-divider"></div>
                     <div class="stat">
                         <span class="stat-number" data-target="15">0</span><span class="stat-plus">+</span>
-                        <span class="stat-label">Clients Served</span>
+                        <span class="stat-label">clients served</span>
                     </div>
                 </div>
             </div>
             <div class="hero-image">
                 <div class="image-frame">
-                    <div class="frame-decoration"></div>
                     <img src="MRC01645.JPG" alt="Mohammed Muhsin" class="profile-img">
-                    <div class="floating-badge badge-1">
-                        <span class="badge-icon">🐍</span>
-                        <span>Python</span>
-                    </div>
-                    <div class="floating-badge badge-2">
-                        <span class="badge-icon">📦</span>
-                        <span>Odoo</span>
-                    </div>
-                    <div class="floating-badge badge-3">
-                        <span class="badge-icon">📱</span>
-                        <span>Flutter</span>
-                    </div>
+                    <div class="image-caption">Working at Foxiom Leads, Kerala</div>
                 </div>
             </div>
         </div>
-        <a href="#about" class="scroll-indicator">
-            <span class="scroll-arrow"></span>
-        </a>
     </section>
 
     <!-- About Section -->
     <section class="about" id="about">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Get To Know Me</span>
-                <h2 class="section-title">About Me</h2>
-                <div class="title-underline"></div>
+                <span class="section-number">01</span>
+                <h2 class="section-title">About</h2>
             </div>
             <div class="about-grid">
                 <div class="about-image">
@@ -106,61 +91,45 @@
                                 <img src="MRC01648.JPG" alt="Mohammed Muhsin" class="carousel-slide">
                                 <img src="MRC01656.JPG" alt="Mohammed Muhsin" class="carousel-slide">
                             </div>
-                            <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous image">❮</button>
-                            <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next image">❯</button>
+                            <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous image">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                            </button>
+                            <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next image">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                            </button>
                             <div class="carousel-dots" id="carouselDots">
                                 <span class="dot active" data-index="0"></span>
                                 <span class="dot" data-index="1"></span>
                                 <span class="dot" data-index="2"></span>
                             </div>
                         </div>
-                        <div class="experience-badge">
-                            <span class="exp-number">4+</span>
-                            <span class="exp-text">Years of<br>Experience</span>
-                        </div>
                     </div>
                 </div>
                 <div class="about-content">
-                    <h3>Odoo Team Lead & Senior Developer</h3>
-                    <p>
-                        Results-driven professional with over 4 years of expertise in architecting, developing, and deploying custom ERP solutions for international and domestic clients. Proven track record of leading development teams, managing full-lifecycle enterprise implementations, and building scalable modules across diverse sectors.
+                    <p class="about-lead">
+                        I'm a developer who cares about the gap between what a system promises and what it actually does. For the past 4 years, I've been building Odoo-based ERP solutions for companies across India and the Middle East — from chemical manufacturers in Kuwait to retail chains in Kerala.
                     </p>
                     <p>
-                        Highly proficient in Python, PostgreSQL, Odoo ORM, OWL JS framework, REST APIs, and multi-tenant architectures. Supplemented by cross-platform mobile app development (Flutter) and backend capabilities (Django, React Native basics) to create connected multi-channel business ecosystems.
+                        Currently leading a team at <a href="https://foxiom.com" target="_blank" rel="noopener">Foxiom Leads</a>, where we handle everything from initial architecture to deployment. I work mostly with Python, PostgreSQL, and the Odoo framework, but I also build mobile apps with Flutter when the problem calls for it.
                     </p>
-                    <div class="about-info">
-                        <div class="info-item">
-                            <span class="info-icon">📍</span>
-                            <div>
-                                <span class="info-label">Location</span>
-                                <span class="info-value">Malappuram, Kerala, India</span>
-                            </div>
+                    <p>
+                        When I'm not writing code, I'm usually reviewing it — making sure the team's output is clean, maintainable, and actually solves the business problem at hand.
+                    </p>
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">Malappuram, Kerala, India</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-icon">🎓</span>
-                            <div>
-                                <span class="info-label">Education</span>
-                                <span class="info-value">B.Tech Computer Science</span>
-                            </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Education</span>
+                            <span class="detail-value">B.Tech Computer Science, KTU</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-icon">🌐</span>
-                            <div>
-                                <span class="info-label">Languages</span>
-                                <span class="info-value">English, Hindi, Tamil, Arabic</span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-icon">💼</span>
-                            <div>
-                                <span class="info-label">Current Role</span>
-                                <span class="info-value">Team Lead @ <a href="https://foxiom.com" target="_blank" rel="noopener">Foxiom Leads</a></span>
-                            </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Languages</span>
+                            <span class="detail-value">English, Hindi, Tamil, Arabic</span>
                         </div>
                     </div>
-                    <a href="Mohammed_Muhsin_Resume_ATS.pdf" class="btn btn-primary" download>
-                        <span class="btn-icon">📄</span> Download Resume
-                    </a>
+                    <a href="Mohammed_Muhsin_Resume_ATS.pdf" class="btn btn-primary" download>Download resume</a>
                 </div>
             </div>
         </div>
@@ -170,82 +139,62 @@
     <section class="skills" id="skills">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">What I Bring to the Table</span>
-                <h2 class="section-title">Technical Skills</h2>
-                <div class="title-underline"></div>
+                <span class="section-number">02</span>
+                <h2 class="section-title">Skills</h2>
             </div>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <div class="category-icon">📦</div>
-                    <h3>Odoo Framework</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Odoo v15</span>
-                        <span class="skill-tag">Odoo v16</span>
-                        <span class="skill-tag">Odoo v17</span>
-                        <span class="skill-tag">Community & Enterprise</span>
-                        <span class="skill-tag">Custom Modules</span>
-                        <span class="skill-tag">Odoo ORM</span>
-                        <span class="skill-tag">QWeb</span>
-                        <span class="skill-tag">OWL JS Framework</span>
-                        <span class="skill-tag">Workflow Automation</span>
-                        <span class="skill-tag">Server Actions</span>
+            <div class="skills-layout">
+                <div class="skills-main">
+                    <div class="skill-group">
+                        <h3>Core</h3>
+                        <ul class="skill-list">
+                            <li>Python</li>
+                            <li>JavaScript (ES6+)</li>
+                            <li>PostgreSQL</li>
+                            <li>HTML5 & CSS3</li>
+                            <li>SQL & XML</li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <h3>Odoo</h3>
+                        <ul class="skill-list">
+                            <li>Odoo v15, v16, v17</li>
+                            <li>Community & Enterprise</li>
+                            <li>Custom Module Development</li>
+                            <li>Odoo ORM & QWeb</li>
+                            <li>OWL JS Framework</li>
+                            <li>Workflow Automation</li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <h3>Mobile & Web</h3>
+                        <ul class="skill-list">
+                            <li>Flutter</li>
+                            <li>React Native (basics)</li>
+                            <li>Django (basics)</li>
+                            <li>RESTful APIs</li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <h3>Tools & Infrastructure</h3>
+                        <ul class="skill-list">
+                            <li>Git & GitHub</li>
+                            <li>Docker</li>
+                            <li>Nginx</li>
+                            <li>Linux (Ubuntu)</li>
+                            <li>PyCharm & Postman</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="skill-category">
-                    <div class="category-icon">💻</div>
-                    <h3>Programming Languages</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">JavaScript ES6+</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS3</span>
-                        <span class="skill-tag">SQL</span>
-                        <span class="skill-tag">XML</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-icon">📱</div>
-                    <h3>Mobile & Web</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Flutter</span>
-                        <span class="skill-tag">React Native</span>
-                        <span class="skill-tag">Django</span>
-                        <span class="skill-tag">RESTful APIs</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-icon">🗄️</div>
-                    <h3>Databases & Tools</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">Git & GitHub</span>
-                        <span class="skill-tag">Nginx</span>
-                        <span class="skill-tag">Docker</span>
-                        <span class="skill-tag">Linux Ubuntu</span>
-                        <span class="skill-tag">PyCharm</span>
-                        <span class="skill-tag">Postman</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-icon">🏗️</div>
-                    <h3>Architecture</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Multi-Company ERP</span>
-                        <span class="skill-tag">Full-Stack Development</span>
-                        <span class="skill-tag">Agile/Scrum</span>
-                        <span class="skill-tag">Code Reviews</span>
-                        <span class="skill-tag">Performance Optimization</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-icon">🎯</div>
-                    <h3>Domain Expertise</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Cost Accounting</span>
-                        <span class="skill-tag">Inventory & Supply Chain</span>
-                        <span class="skill-tag">Manufacturing</span>
-                        <span class="skill-tag">POS Systems</span>
-                        <span class="skill-tag">CRM</span>
+                <div class="skills-sidebar">
+                    <p class="sidebar-note">
+                        I specialize in the Odoo ecosystem — building custom modules, designing multi-company architectures, and leading teams through full-lifecycle ERP implementations. My domain experience spans manufacturing, retail, automotive, and logistics.
+                    </p>
+                    <div class="domain-tags">
+                        <span>Cost Accounting</span>
+                        <span>Inventory & Supply Chain</span>
+                        <span>Manufacturing</span>
+                        <span>POS Systems</span>
+                        <span>CRM</span>
                     </div>
                 </div>
             </div>
@@ -256,9 +205,8 @@
     <section class="experience" id="experience">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">My Professional Journey</span>
+                <span class="section-number">03</span>
                 <h2 class="section-title">Experience</h2>
-                <div class="title-underline"></div>
             </div>
             <div class="timeline">
                 <div class="timeline-item">
@@ -266,14 +214,16 @@
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <h3>Odoo Team Lead & Senior Developer</h3>
-                            <span class="timeline-company"><a href="https://foxiom.com" target="_blank" rel="noopener">Foxiom Leads Pvt Ltd</a></span>
+                            <span class="timeline-meta">
+                                <a href="https://foxiom.com" target="_blank" rel="noopener" class="timeline-company">Foxiom Leads Pvt Ltd</a>
+                                <span class="timeline-date">Feb 2023 – Present</span>
+                            </span>
                         </div>
-                        <span class="timeline-date">Feb 2023 – Present</span>
                         <ul class="timeline-tasks">
-                            <li>Lead an engineering team of Odoo developers, conducting code reviews, managing deployment pipelines, and ensuring architectural standards</li>
-                            <li>Spearheaded end-to-end design and delivery of complex custom Odoo modules for inventory, accounting, manufacturing, and supply chain</li>
-                            <li>Leveraged the Odoo OWL framework to build high-performance, dynamic dashboard components and enhanced user interfaces</li>
-                            <li>Served as lead Onsite Odoo Developer in Kuwait (June 2024 – May 2025), directing multi-company ERP implementations for major industrial clients</li>
+                            <li>Lead an engineering team of Odoo developers — code reviews, deployment pipelines, architectural standards</li>
+                            <li>Design and deliver custom Odoo modules for inventory, accounting, manufacturing, and supply chain</li>
+                            <li>Build dynamic dashboard components using the Odoo OWL framework and custom services</li>
+                            <li>Served as lead Onsite Odoo Developer in Kuwait (Jun 2024 – May 2025) for major industrial clients including Alsanea and Al Barakk Chemical</li>
                         </ul>
                     </div>
                 </div>
@@ -282,12 +232,14 @@
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <h3>Odoo Developer Intern</h3>
-                            <span class="timeline-company"><a href="https://foxiom.com" target="_blank" rel="noopener">Foxiom Leads Pvt Ltd</a></span>
+                            <span class="timeline-meta">
+                                <a href="https://foxiom.com" target="_blank" rel="noopener" class="timeline-company">Foxiom Leads Pvt Ltd</a>
+                                <span class="timeline-date">Feb 2023 – Jun 2023</span>
+                            </span>
                         </div>
-                        <span class="timeline-date">Feb 2023 – June 2023</span>
                         <ul class="timeline-tasks">
-                            <li>Assisted in developing and customizing core Odoo modules and relational database models</li>
-                            <li>Collaborated with cross-functional teams to translate business workflows into functional ERP specifications</li>
+                            <li>Developed and customized core Odoo modules and relational database models</li>
+                            <li>Translated business workflows into functional ERP specifications</li>
                         </ul>
                     </div>
                 </div>
@@ -296,12 +248,11 @@
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <h3>B.Tech Computer Science & Engineering</h3>
-                            <span class="timeline-company">APJ Abdul Kalam Technological University</span>
+                            <span class="timeline-meta">
+                                <span class="timeline-company">APJ Abdul Kalam Technological University</span>
+                                <span class="timeline-date">2018 – 2022</span>
+                            </span>
                         </div>
-                        <span class="timeline-date">2018 – 2022</span>
-                        <ul class="timeline-tasks">
-                            <li>Graduated with a Bachelor in Technology degree</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -312,177 +263,112 @@
     <section class="projects" id="projects">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Featured Work</span>
-                <h2 class="section-title">Enterprise Projects</h2>
-                <div class="title-underline"></div>
+                <span class="section-number">04</span>
+                <h2 class="section-title">Selected Work</h2>
             </div>
             <div class="project-filters">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="erp">ERP</button>
                 <button class="filter-btn" data-filter="mobile">Mobile</button>
                 <button class="filter-btn" data-filter="automotive">Automotive</button>
-                <button class="filter-btn" data-filter="retail">Retail & POS</button>
+                <button class="filter-btn" data-filter="retail">Retail</button>
             </div>
             <div class="projects-grid">
                 <div class="project-card" data-category="erp">
-                    <div class="project-image erp-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M32 4L4 20v24l28 16 28-16V20L32 4zm0 6l22 12.5L32 35 10 22.5 32 10zM10 27h44v17L32 56 10 44V27z"/><circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.6)"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Multi-Company ERP</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">ERP</span>
+                        <span class="project-year">2024</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Alsanea Chemical Company</h3>
-                        <p>Full multi-company ERP implementation covering complex manufacturing runs, multi-warehouse inventory, and financial accounting in Kuwait.</p>
-                        <div class="project-tech">
-                            <span>Odoo</span>
-                            <span>PostgreSQL</span>
-                            <span>Manufacturing</span>
-                        </div>
-                        <a href="https://alsanea.com" target="_blank" rel="noopener" class="project-link">Visit Website →</a>
+                    <h3 class="project-name">Alsanea Chemical Company</h3>
+                    <p class="project-desc">Full multi-company ERP for chemical manufacturing in Kuwait — manufacturing runs, multi-warehouse inventory, financial accounting.</p>
+                    <div class="project-tech">
+                        <span>Odoo</span><span>PostgreSQL</span><span>Manufacturing</span>
                     </div>
+                    <a href="https://alsanea.com" target="_blank" rel="noopener" class="project-link">alsanea.com ↗</a>
                 </div>
                 <div class="project-card" data-category="erp">
-                    <div class="project-image erp-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M32 4L4 20v24l28 16 28-16V20L32 4zm0 6l22 12.5L32 35 10 22.5 32 10zM10 27h44v17L32 56 10 44V27z"/><circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.6)"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Enterprise ERP</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">ERP</span>
+                        <span class="project-year">2024</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Al Barakk Chemical Company</h3>
-                        <p>Comprehensive ERP solution for chemical manufacturing with multi-warehouse management and integrated financial systems.</p>
-                        <div class="project-tech">
-                            <span>Odoo</span>
-                            <span>Inventory</span>
-                            <span>Accounting</span>
-                        </div>
-                        <a href="https://www.albarrakchem.com" target="_blank" rel="noopener" class="project-link">Visit Website →</a>
+                    <h3 class="project-name">Al Barakk Chemical Company</h3>
+                    <p class="project-desc">ERP solution for chemical manufacturing with multi-warehouse management and integrated financial systems.</p>
+                    <div class="project-tech">
+                        <span>Odoo</span><span>Inventory</span><span>Accounting</span>
                     </div>
+                    <a href="https://www.albarrakchem.com" target="_blank" rel="noopener" class="project-link">albarrakchem.com ↗</a>
                 </div>
                 <div class="project-card" data-category="mobile">
-                    <div class="project-image mobile-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><rect x="20" y="4" width="24" height="56" rx="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><circle cx="32" cy="14" r="2" fill="rgba(255,255,255,0.9)"/><rect x="24" y="20" width="16" height="24" rx="2" fill="rgba(255,255,255,0.4)"/><circle cx="32" cy="52" r="3" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Mobile App</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">Mobile</span>
+                        <span class="project-year">2024</span>
                     </div>
-                    <div class="project-info">
-                        <h3>On-Demand Beauty Parlour App</h3>
-                        <p>Fully customized cross-platform mobile application for booking beauty services, scheduling appointments, and managing service providers.</p>
-                        <div class="project-tech">
-                            <span>Flutter</span>
-                            <span>REST API</span>
-                            <span>Mobile</span>
-                        </div>
-                        <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">View Case Study →</a>
+                    <h3 class="project-name">On-Demand Beauty Parlour App</h3>
+                    <p class="project-desc">Cross-platform mobile app for booking beauty services, scheduling appointments, and managing service providers.</p>
+                    <div class="project-tech">
+                        <span>Flutter</span><span>REST API</span><span>Mobile</span>
                     </div>
+                    <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">foxiom.com ↗</a>
                 </div>
                 <div class="project-card" data-category="automotive">
-                    <div class="project-image automotive-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M10 38h-2v-8l4-12h8l4 8h12l6-10h8l4 12v8h-2l-4 4H14l-4-4zm6 4h28l4-4H12l4 4zm-2-12h4v-4h-4v4zm32 0h4v-4h-4v4z"/><circle cx="16" cy="42" r="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2"/><circle cx="48" cy="42" r="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Automotive</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">Automotive</span>
+                        <span class="project-year">2023</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Royal Drive & Demon Autocare</h3>
-                        <p>Specialized automotive service management, workshop scheduling, inventory control, and customer vehicle tracking systems.</p>
-                        <div class="project-tech">
-                            <span>Odoo</span>
-                            <span>Custom Modules</span>
-                            <span>Service Mgmt</span>
-                        </div>
-                        <a href="https://www.royaldrive.in" target="_blank" rel="noopener" class="project-link">Visit Website →</a>
+                    <h3 class="project-name">Royal Drive & Demon Autocare</h3>
+                    <p class="project-desc">Automotive service management with workshop scheduling, inventory control, and vehicle tracking.</p>
+                    <div class="project-tech">
+                        <span>Odoo</span><span>Custom Modules</span><span>Service Mgmt</span>
                     </div>
+                    <a href="https://www.royaldrive.in" target="_blank" rel="noopener" class="project-link">royaldrive.in ↗</a>
                 </div>
                 <div class="project-card" data-category="automotive">
-                    <div class="project-image automotive-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M10 38h-2v-8l4-12h8l4 8h12l6-10h8l4 12v8h-2l-4 4H14l-4-4zm6 4h28l4-4H12l4 4zm-2-12h4v-4h-4v4zm32 0h4v-4h-4v4z"/><circle cx="16" cy="42" r="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2"/><circle cx="48" cy="42" r="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">POS & Automation</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">Automotive</span>
+                        <span class="project-year">2023</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Car Wash Live & Car Wash ZAN</h3>
-                        <p>Streamlined POS and operational workflow automation modules tailored for car wash and detailing businesses.</p>
-                        <div class="project-tech">
-                            <span>Odoo POS</span>
-                            <span>Automation</span>
-                            <span>Workflow</span>
-                        </div>
-                        <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">View Case Study →</a>
+                    <h3 class="project-name">Car Wash Live & Car Wash ZAN</h3>
+                    <p class="project-desc">POS and workflow automation modules for car wash and detailing businesses.</p>
+                    <div class="project-tech">
+                        <span>Odoo POS</span><span>Automation</span><span>Workflow</span>
                     </div>
+                    <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">foxiom.com ↗</a>
                 </div>
                 <div class="project-card" data-category="erp">
-                    <div class="project-image erp-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M32 4L4 20v24l28 16 28-16V20L32 4zm0 6l22 12.5L32 35 10 22.5 32 10zM10 27h44v17L32 56 10 44V27z"/><circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.6)"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Distribution ERP</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">ERP</span>
+                        <span class="project-year">2023</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Trading & Distribution ERPs</h3>
-                        <p>Core distribution, wholesale trading, inventory management, and purchase-to-pay automation for multiple clients including Goldene Globe, CEEPEE, and more.</p>
-                        <div class="project-tech">
-                            <span>Odoo</span>
-                            <span>Inventory</span>
-                            <span>Purchase</span>
-                        </div>
-                        <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">View More Projects →</a>
+                    <h3 class="project-name">Trading & Distribution ERPs</h3>
+                    <p class="project-desc">Distribution, wholesale trading, inventory, and purchase-to-pay automation for Goldene Globe, CEEPEE, and others.</p>
+                    <div class="project-tech">
+                        <span>Odoo</span><span>Inventory</span><span>Purchase</span>
                     </div>
+                    <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">foxiom.com ↗</a>
                 </div>
                 <div class="project-card" data-category="retail">
-                    <div class="project-image retail-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><path fill="rgba(255,255,255,0.9)" d="M8 20h48v4H8v-4zm2 0l4-12h36l4 12H10zm4 4h40v28H14V24zm8 4v6h-4v-6h4zm8 0v6h-4v-6h4zm8 0v6h-4v-6h4zm8 0v6h-4v-6h4z"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">Retail & POS</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">Retail</span>
+                        <span class="project-year">2023</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Retail & POS Solutions</h3>
-                        <p>Customized vertical-specific enhancements and tailored modules for retail, billing, and specialized service delivery across multiple clients.</p>
-                        <div class="project-tech">
-                            <span>Odoo POS</span>
-                            <span>Custom UI</span>
-                            <span>QWeb</span>
-                        </div>
-                        <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">View More Projects →</a>
+                    <h3 class="project-name">Retail & POS Solutions</h3>
+                    <p class="project-desc">Custom modules for retail, billing, and service delivery across multiple clients including Kiwi, Robofoxy, and others.</p>
+                    <div class="project-tech">
+                        <span>Odoo POS</span><span>Custom UI</span><span>QWeb</span>
                     </div>
+                    <a href="https://foxiom.com" target="_blank" rel="noopener" class="project-link">foxiom.com ↗</a>
                 </div>
                 <div class="project-card" data-category="erp">
-                    <div class="project-image crm-icon">
-                        <div class="project-icon-wrapper">
-                            <svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="16" r="8" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3"/><path fill="rgba(255,255,255,0.9)" d="M12 52c0-11.046 8.954-20 20-20s20 8.954 20 20H12z" opacity="0.6"/><circle cx="20" cy="12" r="5" fill="rgba(255,255,255,0.5)"/><circle cx="44" cy="12" r="5" fill="rgba(255,255,255,0.5)"/></svg>
-                        </div>
-                        <div class="project-overlay">
-                            <span class="overlay-tag">CRM</span>
-                        </div>
+                    <div class="project-header">
+                        <span class="project-category">CRM</span>
+                        <span class="project-year">2023</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Glasco CRM</h3>
-                        <p>Integrated CRM extensions to streamline customer pipelines and sales tracking with custom Odoo modules.</p>
-                        <div class="project-tech">
-                            <span>Odoo CRM</span>
-                            <span>Sales</span>
-                            <span>Pipeline</span>
-                        </div>
-                        <a href="https://www.glasco.ie" target="_blank" rel="noopener" class="project-link">Visit Website →</a>
+                    <h3 class="project-name">Glasco CRM</h3>
+                    <p class="project-desc">CRM extensions for customer pipelines and sales tracking with custom Odoo modules.</p>
+                    <div class="project-tech">
+                        <span>Odoo CRM</span><span>Sales</span><span>Pipeline</span>
                     </div>
+                    <a href="https://www.glasco.ie" target="_blank" rel="noopener" class="project-link">glasco.ie ↗</a>
                 </div>
             </div>
         </div>
@@ -492,69 +378,59 @@
     <section class="contact" id="contact">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Let's Work Together</span>
-                <h2 class="section-title">Get In Touch</h2>
-                <div class="title-underline"></div>
+                <span class="section-number">05</span>
+                <h2 class="section-title">Contact</h2>
             </div>
             <div class="contact-grid">
                 <div class="contact-info">
-                    <h3>Let's Build Something Amazing</h3>
-                    <p>
-                        I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Whether you need a custom ERP solution, mobile app, or technical consultation, let's connect.
+                    <p class="contact-lead">
+                        Have a project in mind or just want to say hello? I'm always open to discussing new opportunities, ERP challenges, or interesting problems to solve.
                     </p>
-                    <div class="contact-details">
-                        <a href="mailto:mmusi0634@gmail.com" class="contact-item">
-                            <span class="contact-icon">📧</span>
-                            <div>
-                                <span class="contact-label">Email</span>
-                                <span class="contact-value">mmusi0634@gmail.com</span>
-                            </div>
+                    <div class="contact-methods">
+                        <a href="mailto:mmusi0634@gmail.com" class="contact-method">
+                            <span class="method-label">Email</span>
+                            <span class="method-value">mmusi0634@gmail.com</span>
                         </a>
-                        <a href="tel:+918606289604" class="contact-item">
-                            <span class="contact-icon">📱</span>
-                            <div>
-                                <span class="contact-label">Phone</span>
-                                <span class="contact-value">+91 8606289604</span>
-                            </div>
+                        <a href="tel:+918606289604" class="contact-method">
+                            <span class="method-label">Phone</span>
+                            <span class="method-value">+91 8606289604</span>
                         </a>
-                        <div class="contact-item">
-                            <span class="contact-icon">📍</span>
-                            <div>
-                                <span class="contact-label">Location</span>
-                                <span class="contact-value">Malappuram, Kerala, India</span>
-                            </div>
+                        <div class="contact-method">
+                            <span class="method-label">Location</span>
+                            <span class="method-value">Malappuram, Kerala, India</span>
                         </div>
                     </div>
                     <div class="social-links">
                         <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <span>GitHub</span>
                         </a>
                         <a href="https://www.linkedin.com/in/mohammed-muhsin-40b6a1200" target="_blank" class="social-link" aria-label="LinkedIn">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            <span>LinkedIn</span>
                         </a>
                     </div>
                 </div>
                 <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" required>
-                        <label for="name">Your Name</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required placeholder=" ">
+                            <label for="name">Your Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required placeholder=" ">
+                            <label for="email">Your Email</label>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Your Email</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="subject" name="subject" required>
+                        <input type="text" id="subject" name="subject" required placeholder=" ">
                         <label for="subject">Subject</label>
                     </div>
                     <div class="form-group">
-                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
                         <label for="message">Your Message</label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-submit">
-                        <span class="btn-text">Send Message</span>
-                        <span class="btn-icon">🚀</span>
-                    </button>
+                    <button type="submit" class="btn btn-primary btn-submit">Send message</button>
                 </form>
             </div>
         </div>
@@ -564,16 +440,12 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="footer-text">
-                    Designed & Developed by <strong>Mohammed Muhsin</strong>
-                </p>
-                <p class="footer-copy">
-                    &copy; 2024 All Rights Reserved.
-                </p>
+                <p class="footer-left">© 2025 Mohammed Muhsin</p>
+                <p class="footer-right">Built with care in Kerala, India</p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=5"></script>
 </body>
 </html>
