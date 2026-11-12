@@ -55,7 +55,7 @@ document.addEventListener('mousedown', (e) => {
             life: 1,
             decay: 0.02 + Math.random() * 0.02,
             size: 2 + Math.random() * 3,
-            hue: Math.random() > 0.5 ? 258 : 179 // purple or teal
+            hue: Math.random() > 0.5 ? 0 : 40 // red or pearl white
         });
     }
 });
@@ -114,10 +114,10 @@ function drawRibbon() {
             // Opacity: full at head, fades at tail
             const opacity = (1 - progress) * (isHovering ? 0.9 : 0.6);
 
-            // Color: purple at head, teal at tail
-            const hue = 258 - progress * 79; // 258 (purple) -> 179 (teal)
-            const saturation = isHovering ? 80 : 70;
-            const lightness = isHovering ? 70 : 65;
+            // Color: Rosso Corsa red at head, Pearl White at tail
+            const hue = 0 + progress * 40; // 0 (red) -> 40 (pearl white)
+            const saturation = isHovering ? 90 : 80;
+            const lightness = isHovering ? 60 : 55;
 
             ctx.beginPath();
 
@@ -156,16 +156,16 @@ function drawRibbon() {
         ctx.beginPath();
         ctx.arc(trail[0].x, trail[0].y, headSize, 0, Math.PI * 2);
         ctx.fillStyle = isHovering
-            ? `hsla(179, 80%, 70%, 0.9)`
-            : `hsla(258, 70%, 75%, 0.8)`;
+            ? `hsla(40, 60%, 85%, 0.9)`
+            : `hsla(0, 80%, 55%, 0.8)`;
         ctx.fill();
 
         // Cursor head glow
         ctx.beginPath();
         ctx.arc(trail[0].x, trail[0].y, headSize * 2.5, 0, Math.PI * 2);
         ctx.fillStyle = isHovering
-            ? `hsla(179, 100%, 80%, 0.15)`
-            : `hsla(258, 100%, 80%, 0.1)`;
+            ? `hsla(40, 80%, 85%, 0.15)`
+            : `hsla(0, 100%, 55%, 0.1)`;
         ctx.fill();
     }
 
